@@ -1,0 +1,77 @@
+version: 2
+
+vars:
+  "train_years": "2010,2011,2012"
+sources:
+  - name: sales_forecast
+    schema: ext_source
+    loader: S3
+    tables:
+      - name: ds2_feature_dataset
+        external:
+          location: "s3://ht-general-purpose/dataset/feature"
+          row_format: serde 'org.apache.hadoop.hive.serde2.OpenCSVSerde'
+          serdeproperties: "('separatorChar'=',', 'quoteChar'='\"', 'escapeChar'='\\')'"
+          table_properties: "('skip.header.line.count'='1')"
+        columns:
+          - name: Store
+            data_type: varchar
+          - name: Date
+            data_type: varchar
+          - name: Temperature
+            data_type: varchar
+          - name: Fuel_Price
+            data_type: varchar
+          - name: MarkDown1
+            data_type: varchar
+          - name: MarkDown2
+            data_type: varchar
+          - name: MarkDown3
+            data_type: varchar
+          - name: MarkDown4
+            data_type: varchar
+          - name: MarkDown5
+            data_type: varchar
+          - name: CPI
+            data_type: varchar
+          - name: Unemployment
+            data_type: varchar
+          - name: IsHoliday
+            data_type: varchar
+      - name: ds2_sales_dataset
+        external:
+          location: "s3://ht-general-purpose/dataset/sales"
+          row_format: serde 'org.apache.hadoop.hive.serde2.OpenCSVSerde'
+          serdeproperties: "('separatorChar'=',', 'quoteChar'='\"', 'escapeChar'='\\')'"
+          table_properties: "('skip.header.line.count'='1')"
+        columns:
+          - name: Store
+            data_type: varchar
+          - name: Dept
+            data_type: varchar
+          - name: Date
+            data_type: varchar
+          - name: Weekly_Sales
+            data_type: varchar
+          - name: IsHoliday
+            data_type: varchar
+      - name: ds2_store_dataset
+        external:
+          location: "s3://ht-general-purpose/dataset/store"
+          row_format: serde 'org.apache.hadoop.hive.serde2.OpenCSVSerde'
+          serdeproperties: "('separatorChar'=',', 'quoteChar'='\"', 'escapeChar'='\\')'"
+          table_properties: "('skip.header.line.count'='1')"
+        columns:
+          - name: Store
+            data_type: varchar
+          - name: Type
+            data_type: varchar
+            tests:
+              - accepted_values:
+                  values: ["A", "B", "C"]
+                  config:
+                    severity: warn
+                    warn_if: "> 0"
+                    store_failures: true
+          - name: Size
+            data_type: varchar

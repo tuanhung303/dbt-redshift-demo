@@ -1,0 +1,91 @@
+models:
+  - name: mart_fact_sales
+    description: >
+      Mart layer for sales data (fact table)
+      - materialization: view
+      - downstream of mart_fact_sales with forecasted sales
+    config:
+      contract:
+        enforced: true
+      group: Data engineers
+    columns:
+      - name: store_id
+        description: Unique identifier for the store
+        data_type: int
+        # constraints:
+        #   - type: not_null
+      - name: dept_id
+        description: Unique identifier for the department within the store
+        data_type: int
+        # constraints:
+        #   - type: not_null
+      - name: store_dept_id
+        description: Unique identifier for the store-department combination
+        data_type: numeric(27,0)
+        # constraints:
+        #   - type: not_null
+      - name: date_week
+        description: Date for the week (YYYY-MM-DD format)
+        data_type: timestamp
+        # constraints:
+        #   - type: not_null
+      - name: _week
+        description: Week number
+        data_type: int
+        # constraints:
+        #   - type: not_null
+      - name: cpi
+        description: Consumer Price Index for the week
+        data_type: float
+      - name: temperature
+        description: Average temperature for the week
+        data_type: float
+      - name: fuel_price
+        description: Average fuel price for the week
+        data_type: float
+      - name: unemployment
+        description: Unemployment rate for the week
+        data_type: float
+      - name: isholiday
+        description: Whether the week is a holiday 0 = No, 1 = Yes
+        data_type: int
+      - name: type
+        description: Type of store (e.g., grocery, clothing)
+        data_type: int
+      - name: size
+        description: Size of the store (square footage)
+        data_type: int
+      - name: weekly_sales
+        description: Total weekly sales for the store
+        data_type: float
+      - name: weekly_sales_forecast
+        description: Forecasted weekly sales for the store
+        data_type: float
+
+exposures:
+  - name: mart_sales_dashboard
+    label: Mart Sales dashboard
+    type: dashboard
+    maturity: high
+    url: http://localhost:3000/dashboard/2-sales
+    description: >
+      Did someone say "sales"? This dashboard has all the sales data you could ever want.
+    depends_on:
+      - ref('mart_fact_sales')
+    owner:
+      name: Hung To
+      email: hung.to@datumhq.com
+
+groups:
+  - name: ML engineers
+    owner:
+      email: hung.to@datumhq.com
+      slack: ml-engineers-team
+  - name: Data scientists
+    owner:
+      email: hung.to@datumhq.com
+      slack: data-scientists-team
+  - name: Data engineers
+    owner:
+      email: hung.to@datumhq.com
+      slack: data-engineers-team

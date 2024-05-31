@@ -1,0 +1,42 @@
+models:
+  - name: stg_sales
+    description: >
+      Staging layer for sales data (fact table)
+      - the model will consider all the latest changes from DBT snapshot (SCD Type 2) layer.
+    columns:
+      - name: store_id
+        description: >
+          Foreign key to the store dimension table.
+        tests:
+          - relationships:
+              to: ref('stg_stores')
+              field: store_id
+          - relationships:
+              to: ref('stg_features')
+              field: store_id
+  - name: stg_features
+    description: >
+      Staging layer for features data (dimension table)
+      - the model will consider all the latest changes from DBT snapshot (SCD Type 2) layer.
+    columns:
+      - name: store_id
+        description: >
+          Primary key to the store dimension table.
+  - name: stg_stores
+    description: >
+      Staging layer for stores data (dimension table)
+      - the model will consider all the latest changes from DBT snapshot (SCD Type 2) layer.
+    columns:
+      - name: store_id
+        description: >
+          Primary key to the store dimension table.
+      - name: type
+        description: >
+          Type of the store, converted from the original string, ie. ["A", "B", "C"] to [1, 2, 3].
+          This is only for demo purpose, as Redshift ML only supports numeric values.
+        tests:
+          - accepted_values:
+              values: [1, 2, 3]
+              config:
+                severity: WARN
+                error_if: ">0"

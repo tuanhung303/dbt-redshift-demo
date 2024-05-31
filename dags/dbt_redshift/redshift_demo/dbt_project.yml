@@ -1,0 +1,49 @@
+# Name your project! Project names should contain only lowercase characters
+# and underscores. A good package name should reflect your organization's
+# name or the intended use of these models
+name: redshift_demo
+version: "1.0.0"
+config-version: 2
+
+# This setting configures which "profile" dbt uses for this project.
+profile: redshift_demo
+# https://www.kaggle.com/competitions/walmart-recruiting-store-sales-forecasting/data
+# https://www.kaggle.com/datasets/aslanahmedov/walmart-sales-forecast
+# These configurations specify where dbt should look for different types of files.
+# The `model-paths` config, for example, states that models in this project can be
+# found in the "models/" directory. You probably won't need to change these!
+model-paths: ["models"]
+analysis-paths: ["analyses"]
+test-paths: ["tests"]
+seed-paths: ["seeds"]
+macro-paths: ["macros"]
+snapshot-paths: ["snapshots"]
+
+clean-targets: # directories to be removed by `dbt clean`
+  - "target"
+
+vars:
+  "train_years": "2010,2011"
+  "train_stores": "1,2,3,4"
+  "train_depts": "1,2,3,4"
+
+models:
+  redshift_demo: # the name of a project
+    +persist_docs:
+      relation: true
+      columns: true
+    sales_forecast:
+      +materialized: view
+      +schema: public
+      stg:
+        +materialized: view
+        +schema: stg
+      int:
+        +schema: int
+        +materialized: view
+      mart:
+        +schema: mart
+        +materialized: view
+      ml:
+        +schema: ml
+        +materialized: table

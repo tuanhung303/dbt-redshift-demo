@@ -1,0 +1,8 @@
+# ignore all py cache folders
+*__pycache__*
+dags/dbt_redshift/logs
+dags/dbt_redshift/redshift_demo/.dbt
+logs
+include
+config
+plugins

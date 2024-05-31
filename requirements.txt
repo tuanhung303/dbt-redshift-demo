@@ -1,0 +1,6 @@
+astronomer-cosmos[dbt-redshift]
+psycopg2-binary
+protobuf
+dbt-redshift
+astronomer-cosmos[dbt.all]
+boto3

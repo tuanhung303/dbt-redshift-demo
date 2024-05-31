@@ -1,0 +1,61 @@
+models:
+  - name: int_sales_enhanced
+    description: >
+      The model contains has finest grain of sales data and all the relevant attributes.
+    constraints:
+      - type: primary_key
+        columns: [surrogate_key]
+    tests:
+      - dbt_utils.equal_rowcount:
+          compare_model: ref('stg_sales')
+    columns:
+      - name: surrogate_key
+        tests:
+          - not_null
+          - unique
+      - name: weekly_sales
+        tests:
+          - dbt_utils.accepted_range:
+              min_value: 0
+              inclusive: false
+              config:
+                severity: WARN
+                warn_if: "> 3"
+                store_failures: true
+  - name: int_feature_store
+    description: >
+      The model contains store attributes.
+    constraints:
+      - type: primary_key
+        columns: [store_dept_id, _week]
+    columns:
+      - name: store_dept_id
+        type: integer
+        description: A unique identifier for each store and department.
+      - name: _week
+        type: integer
+        description: The week number of the year.
+      - name: type_scaled
+        type: float
+        description: >
+          A scaled version of the `type` column from the 'feature_prepare_cpi' table, calculated as (`type` - minimum `type`) / (maximum `type` - minimum `type`). This scaling is necessary to ensure that the `type` column has a mean of 0 and a standard deviation of 1, which can improve the performance of the XGBoost classifier by reducing the effect of outliers and improving the model's ability to learn the relationships between features.
+      - name: cpi_avg_scaled
+        type: float
+        description: >
+          A scaled version of the `cpi_avg` column from the 'feature_prepare_cpi' table, calculated as (`cpi_avg` - minimum `cpi_avg`) / (maximum `cpi_avg` - minimum `cpi_avg`). This scaling is necessary to ensure that the `cpi_avg` column has a mean of 0 and a standard deviation of 1, which can improve the performance of the XGBoost classifier by reducing the effect of outliers and improving the model's ability to learn the relationships between features.
+      - name: temperature_avg_scaled
+        type: float
+        description: >
+          A scaled version of the `temperature_avg` column from the 'feature_prepare_cpi' table, calculated as (`temperature_avg` - minimum `temperature_avg`) / (maximum `temperature_avg` - minimum `temperature_avg`). This scaling is necessary to ensure that the `temperature_avg` column has a mean of 0 and a standard deviation of 1, which can improve the performance of the XGBoost classifier by reducing the effect of outliers and improving the model's ability to learn the relationships between features.
+      - name: fuel_price_avg_scaled
+        type: float
+        description: >
+          A scaled version of the `fuel_price_avg` column from the 'feature_prepare_cpi' table, calculated as (`fuel_price_avg` - minimum `fuel_price_avg`) / (maximum `fuel_price_avg` - minimum `fuel_price_avg`). This scaling is necessary to ensure that the `fuel_price_avg` column has a mean of 0 and a standard deviation of 1, which can improve the performance of the XGBoost classifier by reducing the effect of outliers and improving the model's ability to learn the relationships between features.
+      - name: holiday_count_scaled
+        type: float
+        description: >
+          A scaled version of the `holiday_count` column from the 'feature_prepare_cpi' table, calculated as (`holiday_count` - minimum `holiday_count`) / (maximum `holiday_count` - minimum `holiday_count`). This scaling is necessary to ensure that the `holiday_count` column has a mean of 0 and a standard deviation of 1, which can improve the performance of the XGBoost classifier by reducing the effect of outliers and improving the model's ability to learn the relationships between features.
+      - name: unemployment_avg_scaled
+        type: float
+        description: >
+          A scaled version of the `unemployment_avg` column from the 'feature_prepare_cpi' table, calculated as (`unemployment_avg` - minimum `unemployment_avg`) / (maximum `unemployment_avg` - minimum `unemployment_avg`). This scaling is necessary to ensure that the `unemployment_avg` column has a mean of 0 and a standard deviation of 1, which can improve the performance of the XGBoost classifier by reducing the effect of outliers and improving the model's ability to learn the relationships between features.
