@@ -22,3 +22,4 @@ WITH
     )
 
 SELECT * FROM cte
+WHERE store_id in ({{ var('train_stores') }}) and dept_id in ({{ var('train_depts') }})

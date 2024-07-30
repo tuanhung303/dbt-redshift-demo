@@ -1,3 +1,6 @@
+{{
+    config(materialized='table')
+}}
 with
 feature_prepare_cpi as (
 select
@@ -5,6 +8,7 @@ select
     _week,
     type,
     -- measure average cpi, temperature, size and count of holidays
+    avg(size) size_avg,
     avg(cpi) cpi_avg,
     avg(temperature) temperature_avg,
     avg(fuel_price) fuel_price_avg,
@@ -17,6 +21,7 @@ feature_prepare_scaled as (
 select
     store_dept_id,
     _week,
+    size_avg,
     {{ generate_scaler('type', '1') }},
     -- scale the avg. cpi, temperature, size and count of holidays
     -- handle divide by zero

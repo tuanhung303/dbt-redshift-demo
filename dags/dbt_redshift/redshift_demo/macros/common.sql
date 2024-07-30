@@ -11,9 +11,9 @@
 {%- macro get_sales_forecast_inputs(exclude_label=False, exclude_scaled=False) %}
     {%- set label_field = 'weekly_sales' %}
     {%- set fields = ['store_dept_id', '_week'] %}
-    {%- set scaled_field = ['cpi_avg_scaled', 'temperature_avg_scaled', 'fuel_price_avg_scaled', 'unemployment_avg_scaled', 'holiday_count_scaled', 'type_scaled'] %}
+    {%- set scaled_fields = ['size_avg', 'cpi_avg_scaled', 'temperature_avg_scaled', 'fuel_price_avg_scaled', 'unemployment_avg_scaled', 'holiday_count_scaled', 'type_scaled'] %}
     {{- label_field + ',' if not exclude_label else '' }}
-    {{- scaled_field | join(', ') + ',' if not exclude_scaled else '' }}
+    {{- scaled_fields | join(', ') + ',' if not exclude_scaled else '' }}
     {{- fields | join(', ') }}
 {%- endmacro %}
 

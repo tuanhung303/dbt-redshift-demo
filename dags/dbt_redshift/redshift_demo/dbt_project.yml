@@ -24,8 +24,8 @@ clean-targets: # directories to be removed by `dbt clean`
 
 vars:
   "train_years": "2010,2011"
-  "train_stores": "1,2,3,4"
-  "train_depts": "1,2,3,4"
+  "train_stores": "1,2,3,4,6,11,14,25,42,45"
+  "train_depts": "1,2"
 
 models:
   redshift_demo: # the name of a project

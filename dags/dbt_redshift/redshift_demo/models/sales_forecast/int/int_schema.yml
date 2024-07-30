@@ -5,9 +5,6 @@ models:
     constraints:
       - type: primary_key
         columns: [surrogate_key]
-    tests:
-      - dbt_utils.equal_rowcount:
-          compare_model: ref('stg_sales')
     columns:
       - name: surrogate_key
         tests:

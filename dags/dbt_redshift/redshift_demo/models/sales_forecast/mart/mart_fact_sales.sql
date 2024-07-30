@@ -2,7 +2,6 @@ with sales as (
    select
       *,
       extract(year from date_week) as _year
-
    from {{ ref('int_sales_enhanced') }}
 )
 select

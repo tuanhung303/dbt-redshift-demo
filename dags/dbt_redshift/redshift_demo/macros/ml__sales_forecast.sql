@@ -22,9 +22,9 @@
         IAM_ROLE 'arn:aws:iam::621074188511:role/service-role/AmazonRedshift-CommandsAccessRole-20231219T223742' 
         AUTO {{ auto }}
         MODEL_TYPE {{ model_type }}
-        OBJECTIVE 'mse' 
-        PREPROCESSORS 'none' 
-        HYPERPARAMETERS DEFAULT EXCEPT(NUM_ROUND '100') 
+        OBJECTIVE 'mse'
+        PREPROCESSORS 'none'
+        HYPERPARAMETERS DEFAULT EXCEPT(NUM_ROUND '100', MAX_DEPTH '8', LAMBDA '800', ALPHA '800')
         SETTINGS(S3_BUCKET 'ht-general-purpose')
     {% endset %}
     {% do run_query(get_sales_forecast_stm) %}
